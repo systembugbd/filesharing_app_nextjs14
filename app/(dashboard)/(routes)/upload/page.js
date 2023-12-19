@@ -1,7 +1,7 @@
 "use client";
 
 import UploadForm from "./_components/UploadForm";
-import { app } from "@/firebaseConfig";
+import { app } from "/firebaseConfig";
 import {
   getDownloadURL,
   getStorage,

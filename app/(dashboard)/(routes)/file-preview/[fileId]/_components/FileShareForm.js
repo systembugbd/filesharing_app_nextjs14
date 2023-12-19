@@ -4,13 +4,15 @@ import React, { useEffect, useState } from "react";
 import ShowIcon from "../../../upload/_components/ShowIcon";
 import Link from "next/link";
 import { doc, getFirestore, updateDoc } from "firebase/firestore";
-import { app } from "@/firebaseConfig";
+import { app } from "/firebaseConfig";
+import GlobalApi from "../../../../../_components/GlobalApi";
 
 const FileShareForm = ({ file }) => {
   const db = getFirestore(app);
 
   const [toggelPassword, setToggelPassword] = useState();
   const [receiverEmail, setReceiverEmail] = useState();
+  const [note, setNote] = useState();
   const [showSaved, setShowSaved] = useState();
   const { fileUrl, sortUrl, userEmail, name, password, type, size } =
     file || {};
@@ -36,11 +38,36 @@ const FileShareForm = ({ file }) => {
       console.log(error);
     }
   };
+
   useEffect(() => {
     setTimeout(() => {
       setShowSaved(false);
     }, 1000);
   }, [showSaved]);
+
+  const sendMailHandler = (e) => {
+    e.preventDefault();
+
+    const data = {
+      sortUrl,
+      userEmail,
+      name,
+      password,
+      type,
+      size,
+      receiverEmail,
+      note,
+      passwordInput,
+      fileUrl,
+    };
+    try {
+      GlobalApi.SendEmail(data).then((res) => {
+        console.log(res);
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <div>
@@ -52,7 +79,7 @@ const FileShareForm = ({ file }) => {
             icon == "gif" ||
             icon == "jpg" ? (
               <Image
-                alt="Welcome"
+                alt={name}
                 src={fileUrl}
                 width={0}
                 height={0}
@@ -84,7 +111,7 @@ const FileShareForm = ({ file }) => {
         </div>
 
         <form
-          action=""
+          id="emailform"
           className="mx-auto mb-4 max-w-md p-4 border rounded-md w-full"
         >
           <div>
@@ -130,6 +157,7 @@ const FileShareForm = ({ file }) => {
               <input
                 type="email"
                 value={userEmail}
+                name="sender"
                 className="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm"
                 placeholder="Sender email"
                 disabled
@@ -163,6 +191,7 @@ const FileShareForm = ({ file }) => {
               <input
                 type="email"
                 value={receiverEmail}
+                name="receiver"
                 className="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm"
                 placeholder="Enter Receiver email"
                 onChange={(e) => setReceiverEmail(e.target.value)}
@@ -196,6 +225,7 @@ const FileShareForm = ({ file }) => {
               <input
                 type={toggelPassword ? "text" : "password"}
                 value={passwordInput}
+                name="password"
                 className="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm"
                 placeholder={`${
                   password ? "Protected By: " + password : "Enter Password"
@@ -249,13 +279,16 @@ const FileShareForm = ({ file }) => {
               id="OrderNotes"
               className="mt-2 p-4 w-full rounded-lg border-gray-200 align-top shadow-sm sm:text-sm"
               rows="4"
+              name="note"
               placeholder="Enter any additional info..."
+              onChange={(e) => setNote(e.target.value)}
             ></textarea>
           </div>
           <div className="flex items-center justify-between my-4">
             <button
               type="submit"
               className="inline-block rounded-lg bg-blue-500 px-5 py-3 text-sm font-medium text-white"
+              onClick={(e) => sendMailHandler(e)}
             >
               Send Email
             </button>
