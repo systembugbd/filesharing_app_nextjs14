@@ -121,7 +121,7 @@ const FilePreview = ({ params }) => {
                 >
                   <div className="m-4 rounded-[10px] bg-white sm:p-6">
                     <time
-                      datetime="2022-10-10"
+                      dateTime="2022-10-10"
                       className="block text-xs text-gray-500"
                     >
                       {Date(2016, 11, 17, 0, 0, 0, 0)}

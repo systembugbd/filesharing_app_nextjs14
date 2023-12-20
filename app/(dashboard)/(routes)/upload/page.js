@@ -73,7 +73,7 @@ const Upload = () => {
         userName: user?.fullName,
         password: "",
         id: docId,
-        sortUrl: process.env.NEXT_PUBLIC_SHORT_URL + docId,
+        sortUrl: process.env.NEXT_PUBLIC_SHORT_URL + "/f/" + docId,
       });
     } catch (error) {
       console.log(error);
