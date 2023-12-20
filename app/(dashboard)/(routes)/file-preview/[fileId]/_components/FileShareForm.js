@@ -6,6 +6,7 @@ import Link from "next/link";
 import { doc, getFirestore, updateDoc } from "firebase/firestore";
 import { app } from "/firebaseConfig";
 import GlobalApi from "../../../../../_components/GlobalApi";
+import { trucateFileName } from "./../../../../../utils/utilities";
 
 const FileShareForm = ({ file }) => {
   const db = getFirestore(app);
@@ -93,14 +94,7 @@ const FileShareForm = ({ file }) => {
             )}
           </div>
           <div className="mx-auto max-w-lg text-center">
-            <h1 className="text-base">
-              <Link
-                href={fileUrl ? fileUrl : "#"}
-                className="text-primary hover:text-pdark"
-              >
-                {name}
-              </Link>
-            </h1>
+            <h1 className="text-base">{trucateFileName(name, 20, file)}</h1>
 
             <p className="mt-4 text-[12px] text-gray-500">
               {type &&
