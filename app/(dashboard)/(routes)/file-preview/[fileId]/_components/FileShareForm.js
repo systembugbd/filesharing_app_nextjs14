@@ -7,7 +7,7 @@ import { doc, getFirestore, updateDoc } from "firebase/firestore";
 import { app } from "/firebaseConfig";
 import GlobalApi from "../../../../../_components/GlobalApi";
 import { trucateFileName } from "./../../../../../utils/utilities";
-import { CheckCircle, CheckCircle2, CopyIcon, Link2 } from "lucide-react";
+import { CheckCircle, Link2 } from "lucide-react";
 
 const FileShareForm = ({ file }) => {
   const db = getFirestore(app);
@@ -49,6 +49,10 @@ const FileShareForm = ({ file }) => {
     }, 1000);
   }, [showSaved]);
 
+  /**
+   * //Btn Click send Mail with Image dwonload info
+   * @param {*} e
+   */
   const sendMailHandler = (e) => {
     e.preventDefault();
 
@@ -66,7 +70,7 @@ const FileShareForm = ({ file }) => {
     };
     try {
       GlobalApi.SendEmail(data).then((res) => {
-        console.log(res);
+        console.log(res, "Email sent with following data, FileShareForm");
       });
     } catch (error) {
       console.log(error);

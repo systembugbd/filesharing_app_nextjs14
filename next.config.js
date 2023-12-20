@@ -10,3 +10,5 @@ const nextConfig = {
 };
 
 module.exports = nextConfig;
+
+if (!process.env.RESEND_API_KEY) return throwError("RESEND_API_KEY");
