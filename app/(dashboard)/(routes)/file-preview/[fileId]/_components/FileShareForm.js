@@ -8,6 +8,7 @@ import { app } from "/firebaseConfig";
 import GlobalApi from "../../../../../_components/GlobalApi";
 import { trucateFileName } from "./../../../../../utils/utilities";
 import { CheckCircle, Link2 } from "lucide-react";
+import AlertMessage from "../../../upload/_components/AlertMessage";
 
 const FileShareForm = ({ file }) => {
   const db = getFirestore(app);
@@ -22,6 +23,15 @@ const FileShareForm = ({ file }) => {
     file || {};
   const icon = type?.split("/")[1];
   const [passwordInput, setPasswordInput] = useState();
+
+  const [errorMessage, setErrorMessage] = useState({
+    message: "",
+    type: "red",
+  });
+  const [successMessage, setSuccessMessage] = useState({
+    message: "",
+    type: "green",
+  });
 
   //Saved passwrod to database
   const savedPassword = async () => {
@@ -39,7 +49,11 @@ const FileShareForm = ({ file }) => {
       setShowSaved(true);
     } catch (error) {
       setShowSaved(false);
-      console.log(error);
+
+      setErrorMessage((prev) => [{ ...prev, message: error.message }]);
+      setTimeout(() => {
+        setErrorMessage({});
+      }, 2000);
     }
   };
 
@@ -70,13 +84,37 @@ const FileShareForm = ({ file }) => {
     };
     try {
       GlobalApi.SendEmail(data).then((res) => {
-        console.log(res, "Email sent with following data, FileShareForm");
+        // console.log(res, "Email sent with following data, FileShareForm");
+        if (res.data.error) {
+          console.log(res.data.error.message);
+          setErrorMessage((prev) => [
+            { ...prev, message: res.data.error.message },
+          ]);
+          setTimeout(() => {
+            setErrorMessage({});
+          }, 2000);
+        } else {
+          console.log("Successfully sent Email");
+          setSuccessMessage((prev) => [
+            { ...prev, message: `Email has been sent to that email` },
+          ]);
+          //remove success message after 3sec
+          setTimeout(() => {
+            setSuccessMessage({});
+          }, 2000);
+        }
       });
     } catch (error) {
+      setErrorMessage((prev) => [{ ...prev, message: error.message }]);
+      setTimeout(() => {
+        setErrorMessage({});
+      }, 1000);
+
       console.log(error);
     }
   };
 
+  //Copy the url to clipboard
   const copyShortUrl = (shortUrl) => {
     navigator.clipboard.writeText(shortUrl);
     setCopied(true);
@@ -300,6 +338,8 @@ const FileShareForm = ({ file }) => {
             </button>
           </div>
         </form>
+        {errorMessage && <AlertMessage alert={errorMessage} />}
+        {successMessage && <AlertMessage alert={successMessage} />}
       </section>
     </div>
   );

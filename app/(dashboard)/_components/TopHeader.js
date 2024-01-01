@@ -11,9 +11,9 @@ const TopHeader = ({ setToggleSidebar }) => {
       />
       <Image
         alt="logo"
-        src="/logo.svg"
-        width={140}
-        height={95}
+        src="/logo.png"
+        width={50}
+        height={50}
         className="md:hidden"
       />
 

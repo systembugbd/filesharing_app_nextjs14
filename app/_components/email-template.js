@@ -22,7 +22,7 @@ const baseUrl = process.env.NEXT_PUBLIC_SHORT_URL
 
 export const EmailTemplate = ({ response }) => {
   const previewText = `Join ${process.env.NEXT_PUBLIC_SHORT_URL} to Easy upload and share a file with you FNF`;
-  console.log(response, "i am from email template");
+  // console.log(response, "i am from email template");
   return (
     <Html>
       <Head />
@@ -47,9 +47,11 @@ export const EmailTemplate = ({ response }) => {
               <strong>{response?.userEmail.split("@")[0]}</strong>, shared a
               file with you, <br />
               <br />
-              file size: <strong>{(response.size / 1080).toFixed(2)}KB</strong>
+              File size: <strong>{(response.size / 1080).toFixed(2)}KB</strong>
+              <br />
+              File type: <strong>{response.type.split("/")[1]}</strong>
               <br /> <br />
-              with additional note:
+              With additional note:
               <br />
               <strong style={{ color: "blue" }}> ({response?.note})</strong>
               <br />
@@ -58,8 +60,20 @@ export const EmailTemplate = ({ response }) => {
                 <p style={{ color: "red" }}>File is password protected</p>
               )}
               <br />
+              {
+                <Img
+                  src={response.fileUrl}
+                  width="200"
+                  height="200"
+                  alt={response.name}
+                  className="my-0 mx-auto"
+                />
+              }
               <br />
-              <Button href={response?.sortUrl} style={{ color: "blue" }}>
+              <Button
+                href={response?.sortUrl}
+                style={{ color: "blue", fontWeight: "bold" }}
+              >
                 Click to Download
               </Button>
             </Section>

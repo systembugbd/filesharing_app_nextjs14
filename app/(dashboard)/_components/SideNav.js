@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 
-const SideNav = ({ setToggleSidebar }) => {
+const SideNav = ({ setToggleSidebar, params }) => {
   const menuItem = [
     {
       id: 1,
@@ -26,12 +26,12 @@ const SideNav = ({ setToggleSidebar }) => {
     },
   ];
   const [activeIndex, setActiveIndex] = useState(0);
-
+  console.log(params);
   return (
     <div className="shadow-sm h-full w-full border-r">
       <div className="p-4 border-b h-[81px]">
         <Link href="/files" className="hidden md:flex">
-          <Image alt="logo" src="/logo.svg" width={140} height={95} />
+          <Image alt="logo" src="/logo.png" width={50} height={50} />
         </Link>
         <X
           onClick={() => setToggleSidebar()}
