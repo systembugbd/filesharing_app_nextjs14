@@ -35,14 +35,14 @@ const Header = () => {
                 </Link>
               </li>
 
-              <li>
+              {/* <li>
                 <Link
                   className="text-gray-500 transition hover:text-gray-500/75"
                   href="/about-us"
                 >
                   About us
                 </Link>
-              </li>
+              </li> */}
 
               <li>
                 <Link
